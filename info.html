@@ -306,16 +306,27 @@
             .frame { margin: 20px 20px; }
 
             .navigator {
-                flex-wrap: wrap;
-                row-gap: 10px;
+                flex-wrap: nowrap;
                 margin-bottom: 36px;
+                gap: 4px;
             }
 
-            .nav-datetime { font-size: 13px; }
-            .nav-menu { font-size: 14px; }
-            li { margin-left: 10px; }
+            .nav-datetime { font-size: 11px; }
+            .nav-menu { font-size: 13px; }
+            li { margin-left: 8px; }
 
-            .apple-toggle { margin-left: 12px; }
+            .apple-toggle {
+                width: 40px;
+                height: 24px;
+                margin-left: 10px;
+            }
+            .apple-slider::before {
+                width: 18px;
+                height: 18px;
+            }
+            .apple-toggle input:checked + .apple-slider::before {
+                transform: translateX(16px);
+            }
 
             .profile-section { gap: 32px; }
 
@@ -340,8 +351,8 @@
         }
 
         @media (max-width: 380px) {
-            .navigator { justify-content: center; }
-            .nav-datetime { margin-right: 0; flex-basis: 100%; text-align: center; }
+            .nav-datetime { font-size: 10px; }
+            .nav-menu { font-size: 12px; }
             .section-title { font-size: 21px; }
         }
     </style>
