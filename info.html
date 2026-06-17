@@ -301,6 +301,49 @@
             .frame { margin: 30px 40px; }
             .profile-section { grid-template-columns: 1fr; gap: 40px; }
         }
+
+        @media (max-width: 640px) {
+            .frame { margin: 20px 20px; }
+
+            .navigator {
+                flex-wrap: wrap;
+                row-gap: 10px;
+                margin-bottom: 36px;
+            }
+
+            .nav-datetime { font-size: 13px; }
+            .nav-menu { font-size: 14px; }
+            li { margin-left: 10px; }
+
+            .apple-toggle { margin-left: 12px; }
+
+            .profile-section { gap: 32px; }
+
+            #profile-picture {
+                box-shadow: 10px 10px 0px var(--photo-shadow);
+            }
+            #profile-picture:hover {
+                transform: translate(-3px, -3px);
+                box-shadow: 13px 13px 0px var(--photo-shadow-hover);
+            }
+
+            .section-title { font-size: 24px; margin-bottom: 14px; }
+            .desc-text { font-size: 14px; margin-bottom: 28px; }
+            .info-list { margin-bottom: 28px; }
+            .info-list li { font-size: 14px; margin-bottom: 9px; }
+
+            .modal-box { padding: 36px 26px; border-radius: 18px; }
+            .modal-emoji { font-size: 38px; }
+            .modal-title { font-size: 18px; }
+            .modal-desc { font-size: 14px; }
+            .modal-close { padding: 12px 28px; font-size: 12px; }
+        }
+
+        @media (max-width: 380px) {
+            .navigator { justify-content: center; }
+            .nav-datetime { margin-right: 0; flex-basis: 100%; text-align: center; }
+            .section-title { font-size: 21px; }
+        }
     </style>
 </head>
 
@@ -412,9 +455,14 @@
                     desc.textContent  = '밝고 선명한 화면으로 전환됐어요.';
                 }
 
+                const modalBox = overlay.querySelector('.modal-box');
                 overlay.style.display = 'none';
-                void overlay.offsetWidth;
+                modalBox.style.animation = 'none';
+                overlay.style.animation = 'none';
+                void overlay.offsetHeight;
                 overlay.style.display = 'flex';
+                overlay.style.animation = '';
+                modalBox.style.animation = '';
             }
 
             isFirstLoad = false;
