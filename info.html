@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자기소개</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,500;0,600;0,800;0,900;1,200;1,400;1,500;1,600;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg:        #1e1e1e;
+            --bg-card:   #2a2a2a;
+            --text:      #ffffff;
+            --text-muted: rgba(255,255,255,0.65);
+            --border:    rgba(255,255,255,0.08);
+            --card-shadow: rgba(0,0,0,0.35);
+            --nav-hover: gray;
+            --photo-shadow: rgba(255,255,255,0.08);
+            --photo-shadow-hover: rgba(255,255,255,0.15);
+        }
+
+        [data-theme="light"] {
+            --bg:        #f5f5f5;
+            --bg-card:   #ffffff;
+            --text:      #1a1a1a;
+            --text-muted: rgba(0,0,0,0.55);
+            --border:    rgba(0,0,0,0.09);
+            --card-shadow: rgba(0,0,0,0.12);
+            --nav-hover: #555;
+            --photo-shadow: rgba(0,0,0,0.18);
+            --photo-shadow-hover: rgba(0,0,0,0.28);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .frame {
+            margin: 30px 150px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navigator {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 60px;
+        }
+
+        .nav-datetime {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text);
+            margin-right: auto;
+            transition: color 0.4s ease;
+        }
+
+        li {
+            display: inline;
+            align-self: center;
+            margin: 0;
+            margin-left: 15px;
+        }
+
+        ul { margin: 0; }
+
+        .nav-menu {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: var(--text);
+            transition: color 0.3s;
+        }
+
+        .nav-menu:hover { color: var(--nav-hover); }
+
+        a { color: black; text-decoration: none; }
+        a:hover { color: white; transition: 0.3s; }
+
+        .apple-toggle {
+            position: relative;
+            width: 52px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+
+        .apple-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .apple-slider {
+            position: absolute;
+            inset: 0;
+            background: #3a3a3a;
+            border-radius: 999px;
+            transition: background 0.35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .apple-slider::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .apple-toggle input:checked + .apple-slider { background: #3a3a3a; }
+        .apple-toggle input:not(:checked) + .apple-slider { background: #d0d0d0; }
+        .apple-toggle input:checked + .apple-slider::before { transform: translateX(22px); }
+
+        .profile-section {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .image-wrap { position: relative; }
+
+        #profile-picture {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 20px 20px 0px var(--photo-shadow);
+            transition: 0.5s;
+        }
+
+        #profile-picture:hover {
+            transform: translate(-5px, -5px);
+            box-shadow: 25px 25px 0px var(--photo-shadow-hover);
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 32px;
+            letter-spacing: -1px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .desc-text {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            word-break: keep-all;
+            transition: color 0.4s;
+        }
+
+        .info-list {
+            list-style: disc;
+            padding-left: 20px;
+            margin: 0 0 40px 0;
+        }
+
+        .info-list li {
+            font-family: 'Noto Sans KR', sans-serif;
+            padding-left: 4px;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--text-muted);
+            display: list-item;
+            transition: color 0.4s;
+        }
+
+        .info-list li::marker {
+            color: var(--text);
+        }
+
+        .section-group:last-child .info-list { margin-bottom: 0; }
+
+        /* ── 모달 ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            animation: fadeInOverlay 0.4s ease forwards;
+        }
+
+        @keyframes fadeInOverlay {
+            to { opacity: 1; }
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px 60px;
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUpModal 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s forwards;
+            transition: background 0.4s, border 0.4s;
+        }
+
+        @keyframes slideUpModal {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-emoji {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-desc {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .modal-close {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.07);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="light"] .modal-close {
+            border: 1px solid rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.06);
+            color: #1a1a1a;
+        }
+
+        [data-theme="light"] .modal-close:hover {
+            background: rgba(0,0,0,0.12);
+            border-color: rgba(0,0,0,0.4);
+        }
+        
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                        transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1000px) {
+            .frame { margin: 30px 40px; }
+            .profile-section { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="modal-overlay" id="theme-modal-overlay" style="display:none">
+        <div class="modal-box">
+            <div class="modal-emoji" id="theme-modal-emoji"></div>
+            <div class="modal-title" id="theme-modal-title"></div>
+            <p class="modal-desc" id="theme-modal-desc"></p>
+            <button class="modal-close" onclick="document.getElementById('theme-modal-overlay').style.display='none'">CLOSE</button>
+        </div>
+    </div>
+
+    <div class="frame">
+        <nav class="navigator">
+            <div class="nav-datetime" id="nav-datetime"></div>
+            <ul class="nav-list">
+                <li><a class="nav-menu" href="index.html">HOME</a></li>
+                <li><a class="nav-menu" href="info.html">INFO</a></li>
+            </ul>
+            <label class="apple-toggle" aria-label="테마 전환">
+                <input type="checkbox" id="theme-check">
+                <span class="apple-slider"></span>
+            </label>
+        </nav>
+
+        <main class="profile-section">
+            <div class="image-wrap fade-up">
+                <img id="profile-picture" src="profile.jpg" alt="Profile">
+            </div>
+
+            <div class="introduction">
+                <div class="section-group fade-up">
+                    <h2 class="section-title">ABOUT ME</h2>
+                    <p class="desc-text">
+                        웹 서비스의 전체 구조를 이해하는 것에 관심이 있는 컴퓨터공학 전공 학생입니다. 프론트엔드와 백엔드를 함께 학습하며 풀스택 개발 역량을 키우고 있으며, 사용자 중심의 기능 구현과 완성도 높은 결과물을 만드는 것을 목표로 합니다.
+                    </p>
+                </div>
+
+                <div class="section-group fade-up">
+                    <h2 class="section-title">EDUCATION</h2>
+                    <ul class="info-list">
+                        <li>Canadian International School of Beijing 졸업</li>
+                        <li>대구 경신중학교 졸업</li>
+                        <li>대구 대륜고등학교 중퇴</li>
+                        <li>건국대학교 서울캠퍼스 컴퓨터공학부 재학</li>
+                    </ul>
+                </div>
+
+                <div class="section-group fade-up">
+                    <h2 class="section-title">CAPABILITY</h2>
+                    <ul class="info-list">
+                        <li>C, Java, Python 등 프로그래밍 언어를 활용한 기초적인 문제 해결 능력</li>
+                        <li>자료구조 및 알고리즘에 대한 기본적인 이해</li>
+                        <li>데이터 처리 및 프로그램 설계 능력</li>
+                        <li>컴퓨터 시스템 및 소프트웨어 구조에 대한 기초 지식</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function updateDatetime() {
+            const now   = new Date();
+            const month = now.getMonth() + 1;
+            const date  = now.getDate();
+            const days  = ['일', '월', '화', '수', '목', '금', '토'];
+            const day   = days[now.getDay()];
+            const hours = now.getHours();
+            const mins  = String(now.getMinutes()).padStart(2, '0');
+            const ampm  = hours < 12 ? '오전' : '오후';
+            const h12   = hours % 12 || 12;
+            document.getElementById('nav-datetime').textContent =
+                `${month}월 ${date}일 (${day}) ${ampm} ${h12}:${mins}`;
+        }
+        updateDatetime();
+        setInterval(updateDatetime, 1000);
+
+        const html       = document.documentElement;
+        const themeCheck = document.getElementById('theme-check');
+        let isFirstLoad  = true;
+
+        applyTheme('light');
+
+        themeCheck.addEventListener('change', () => {
+            const next = themeCheck.checked ? 'dark' : 'light';
+            applyTheme(next);
+        });
+
+        function applyTheme(theme) {
+            html.dataset.theme = theme;
+            themeCheck.checked = (theme === 'dark');
+
+            if (!isFirstLoad) {
+                const overlay = document.getElementById('theme-modal-overlay');
+                const emoji   = document.getElementById('theme-modal-emoji');
+                const title   = document.getElementById('theme-modal-title');
+                const desc    = document.getElementById('theme-modal-desc');
+
+                if (theme === 'dark') {
+                    emoji.textContent = '🌙';
+                    title.textContent = '다크 모드로 전환됐어요!';
+                    desc.textContent  = '어두운 화면으로 눈을 편하게 보호하세요.';
+                } else {
+                    emoji.textContent = '☀️';
+                    title.textContent = '라이트 모드로 전환됐어요!';
+                    desc.textContent  = '밝고 선명한 화면으로 전환됐어요.';
+                }
+
+                overlay.style.display = 'none';
+                void overlay.offsetWidth;
+                overlay.style.display = 'flex';
+            }
+
+            isFirstLoad = false;
+        }
+
+        const fadeEls = document.querySelectorAll('.fade-up');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(fadeEls).indexOf(entry.target);
+                    entry.target.style.transitionDelay = `${index * 0.12}s`;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.15
+        });
+
+        fadeEls.forEach(el => observer.observe(el));
+    </script>
+
+</body>
+</html>

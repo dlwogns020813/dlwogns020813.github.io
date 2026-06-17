@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이재훈의 홈페이지</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,200;0,400;0,500;0,600;0,800;0,900;1,200;1,400;1,500;1,600;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:        #1e1e1e;
+            --bg-card:   #2a2a2a;
+            --text:      #ffffff;
+            --text-muted: rgba(255,255,255,0.65);
+            --border:    rgba(255,255,255,0.08);
+            --card-shadow: rgba(0,0,0,0.35);
+            --nav-hover: gray;
+        }
+
+        [data-theme="light"] {
+            --bg:        #f5f5f5;
+            --bg-card:   #ffffff;
+            --text:      #1a1a1a;
+            --text-muted: rgba(0,0,0,0.55);
+            --border:    rgba(0,0,0,0.09);
+            --card-shadow: rgba(0,0,0,0.12);
+            --nav-hover: #555;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .frame {
+            margin: 30px 150px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navigator {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-datetime {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text);
+            margin-right: auto;
+            transition: color 0.4s ease;
+        }
+
+        li {
+            display: inline;
+            align-self: center;
+            margin: 0;
+            margin-left: 15px;
+        }
+
+        ul { margin: 0; }
+
+        .nav-menu {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            color: var(--text);
+            transition: color 0.3s;
+        }
+
+        .nav-menu:hover { color: var(--nav-hover); }
+
+        a { color: black; text-decoration: none; }
+        a:hover { color: white; transition: 0.3s; }
+
+        .apple-toggle {
+            position: relative;
+            width: 52px;
+            height: 30px;
+            cursor: pointer;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+
+        .apple-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .apple-slider {
+            position: absolute;
+            inset: 0;
+            background: #3a3a3a;
+            border-radius: 999px;
+            transition: background 0.35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .apple-slider::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+        }
+
+        .apple-toggle input:checked + .apple-slider { background: #3a3a3a; }
+        .apple-toggle input:not(:checked) + .apple-slider { background: #d0d0d0; }
+        .apple-toggle input:checked + .apple-slider::before { transform: translateX(22px); }
+
+        .main-layout {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.3fr 0.8fr;
+            gap: 80px;
+            align-items: center;
+            margin-top: 100px;
+            margin-bottom: 70px;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .korean-comment {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 50px;
+            line-height: 1.4;
+            font-weight: 500;
+            min-height: 210px;
+            color: var(--text);
+        }
+
+        .sample { background-color: #0a84ff; padding: 2px 8px; color: #fff; }
+        .sample:hover { background-color: transparent; color: var(--text); transition: none; }
+        .highlight:hover { background-color: transparent; color: var(--text); transition: none; }
+        .type1 { background-color: #30d158; padding: 2px 8px; color: #fff; }
+        .type2 { background-color: #5e5ce6; padding: 2px 8px; color: #fff; }
+        .type3 { background-color: #bf5af2; padding: 2px 8px; color: #fff; }
+
+        .english-comment {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+            font-style: italic;
+            letter-spacing: -0.3px;
+            color: var(--text-muted);
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.9s ease, transform 0.9s ease, color 0.4s ease;
+        }
+
+        .english-comment.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .music-card, .footer {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: background 0.4s, border 0.4s,
+                        opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                        transform 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                        box-shadow 0.3s;
+        }
+
+        .music-card.revealed:hover, .footer.revealed:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px var(--card-shadow);
+        }
+
+        .music-card.revealed, .footer.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .music-card {
+            border-radius: 24px;
+            padding: 35px;
+        }
+
+        .music-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .music-label.visible { opacity: 1; }
+
+        .music-inner { display: flex; flex-direction: column; gap: 16px; }
+        .music-top { display: flex; align-items: center; gap: 20px; }
+
+        .vinyl {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: url('meow.jpg') center/cover;
+            border: 3px solid var(--border);
+            flex-shrink: 0;
+            animation: spin 8s linear infinite paused;
+        }
+
+        .vinyl.spinning { animation-play-state: running; }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .track-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        .custom-audio {
+            width: 100%;
+            accent-color: #5e5ce6;
+            filter: invert(1) hue-rotate(200deg) brightness(0.85);
+        }
+
+        [data-theme="light"] .custom-audio { filter: none; }
+
+        .footer {
+            padding: 35px;
+            border-radius: 24px;
+            text-align: center;
+        }
+
+        .contact {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--text);
+        }
+
+        .links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+
+        .icon { width: 42px; transition: transform 0.3s ease; }
+        .icon:hover { transform: scale(1.2); }
+
+        .icon-github { filter: invert(1); }
+        [data-theme="light"] .icon-github { filter: none; }
+
+        .footer p {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-weight: 100;
+            font-size: 15px;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 0.85em;
+            background: var(--text);
+            vertical-align: middle;
+            margin-left: 3px;
+            animation: blink 0.7s step-end infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                        transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── 모달 ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            opacity: 0;
+            animation: fadeInOverlay 0.4s ease forwards;
+        }
+
+        @keyframes fadeInOverlay {
+            to { opacity: 1; }
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 50px 60px;
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUpModal 0.5s cubic-bezier(0.23,1,0.32,1) 0.1s forwards;
+            transition: background 0.4s, border 0.4s;
+        }
+
+        @keyframes slideUpModal {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-emoji { font-size: 48px; margin-bottom: 20px; }
+
+        .modal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-desc {
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 15px;
+            font-weight: 300;
+            color: var(--text-muted);
+            line-height: 1.8;
+            margin-bottom: 32px;
+        }
+
+        .modal-close {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.07);
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        [data-theme="light"] .modal-close {
+            border: 1px solid rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.06);
+            color: #1a1a1a;
+        }
+
+        [data-theme="light"] .modal-close:hover {
+            background: rgba(0,0,0,0.12);
+            border-color: rgba(0,0,0,0.4);
+        }
+
+        @media (max-width: 1000px) {
+            .frame { margin: 30px 40px; }
+            .main-layout { grid-template-columns: 1fr; gap: 60px; margin-top: 60px; }
+            .korean-comment { font-size: 40px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="modal-overlay" id="theme-modal-overlay" style="display:none">
+        <div class="modal-box">
+            <div class="modal-emoji" id="theme-modal-emoji"></div>
+            <div class="modal-title" id="theme-modal-title"></div>
+            <p class="modal-desc" id="theme-modal-desc"></p>
+            <button class="modal-close" onclick="document.getElementById('theme-modal-overlay').style.display='none'">CLOSE</button>
+        </div>
+    </div>
+
+    <div class="frame">
+
+        <nav class="navigator">
+            <div class="nav-datetime" id="nav-datetime"></div>
+            <ul>
+                <li><a class="nav-menu" href="index.html">HOME</a></li>
+                <li><a class="nav-menu" href="info.html">INFO</a></li>
+            </ul>
+            <label class="apple-toggle" aria-label="테마 전환">
+                <input type="checkbox" id="theme-check">
+                <span class="apple-slider"></span>
+            </label>
+        </nav>
+
+        <div class="main-layout">
+
+            <section class="dashboard fade-up">
+                <h1 class="korean-comment" id="typewriter-target"></h1>
+                <p class="english-comment" id="english-quote">
+                    Debugging is twice as hard as writing the code in the first place.<br>
+                    Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it. - Brian W. Kernighan
+                </p>
+            </section>
+
+            <section class="side-panel">
+
+                <div class="music-card" id="music-card">
+                    <div class="music-label">NOW PLAYING...</div>
+
+                    <div class="music-inner">
+                        <div class="music-top">
+                            <div class="vinyl"></div>
+                            <div class="track-title">Meow.mp3</div>
+                        </div>
+                        <audio class="custom-audio" controls>
+                            <source src="meow.mp3" type="audio/mp3">
+                        </audio>
+                    </div>
+                </div>
+
+                <footer class="footer" id="footer-card">
+                    <h3 class="contact">CONTACT ME</h3>
+                    <div class="links">
+                        <a href="https://www.instagram.com/constluv1012/">
+                            <img class="icon" src="Instagram_Glyph_Gradient.png" alt="Instagram">
+                        </a>
+                        <a href="https://github.com/dlwogns020813/">
+                            <img class="icon icon-github" src="GitHub_Invertocat_Black.png" alt="GitHub">
+                        </a>
+                    </div>
+                </footer>
+
+            </section>
+        </div>
+    </div>
+
+    <script>
+        function updateDatetime() {
+            const now   = new Date();
+            const month = now.getMonth() + 1;
+            const date  = now.getDate();
+            const days  = ['일', '월', '화', '수', '목', '금', '토'];
+            const day   = days[now.getDay()];
+            const hours = now.getHours();
+            const mins  = String(now.getMinutes()).padStart(2, '0');
+            const ampm  = hours < 12 ? '오전' : '오후';
+            const h12   = hours % 12 || 12;
+            document.getElementById('nav-datetime').textContent =
+                `${month}월 ${date}일 (${day}) ${ampm} ${h12}:${mins}`;
+        }
+        updateDatetime();
+        setInterval(updateDatetime, 1000);
+
+        const html       = document.documentElement;
+        const themeCheck = document.getElementById('theme-check');
+        let isFirstLoad  = true;
+
+        applyTheme('light');
+
+        themeCheck.addEventListener('change', () => {
+            const next = themeCheck.checked ? 'dark' : 'light';
+            applyTheme(next);
+        });
+
+        function applyTheme(theme) {
+            html.dataset.theme = theme;
+            themeCheck.checked = (theme === 'dark');
+
+            if (!isFirstLoad) {
+                const overlay = document.getElementById('theme-modal-overlay');
+                const emoji   = document.getElementById('theme-modal-emoji');
+                const title   = document.getElementById('theme-modal-title');
+                const desc    = document.getElementById('theme-modal-desc');
+
+                if (theme === 'dark') {
+                    emoji.textContent = '🌙';
+                    title.textContent = '다크 모드로 전환됐어요!';
+                    desc.textContent  = '어두운 화면으로 눈을 편하게 보호하세요.';
+                } else {
+                    emoji.textContent = '☀️';
+                    title.textContent = '라이트 모드로 전환됐어요!';
+                    desc.textContent  = '밝고 선명한 화면으로 전환됐어요.';
+                }
+
+                overlay.style.display = 'none';
+                void overlay.offsetWidth;
+                overlay.style.display = 'flex';
+            }
+
+            isFirstLoad = false;
+        }
+        
+        const audio      = document.querySelector('.custom-audio');
+        const vinyl      = document.querySelector('.vinyl');
+        const musicLabel = document.querySelector('.music-label');
+
+        audio.addEventListener('play', () => {
+            vinyl.classList.add('spinning');
+            musicLabel.textContent = 'NOW PLAYING...';
+            musicLabel.classList.add('visible');
+        });
+        audio.addEventListener('pause', () => {
+            vinyl.classList.remove('spinning');
+            musicLabel.textContent = 'PAUSED';
+        });
+        audio.addEventListener('ended', () => {
+            vinyl.classList.remove('spinning');
+            musicLabel.classList.remove('visible');
+        });
+
+        const segments = [
+            { text: '안녕하세요! 제 이름은 ' },
+            { text: '이재훈', cls: 'sample' },
+            { text: '\n' },
+            { text: '진짜 문제', cls: 'highlight type1' },
+            { text: '를 ' },
+            { text: '제대로', cls: 'highlight type2' },
+            { text: ' 해결하는' },
+            { text: '\n' },
+            { text: '풀스택 개발자', cls: 'highlight type3' },
+            { text: '를 꿈꿉니다.' },
+        ];
+
+        const target     = document.getElementById('typewriter-target');
+        const quote      = document.getElementById('english-quote');
+        const musicCard  = document.getElementById('music-card');
+        const footerCard = document.getElementById('footer-card');
+        const cursorEl   = document.createElement('span');
+        cursorEl.className = 'cursor';
+
+        let segIdx = 0, charIdx = 0;
+        const SPEED = 65;
+
+        function revealSequence() {
+            target.appendChild(cursorEl);
+            setTimeout(() => {
+                cursorEl.remove();
+                quote.classList.add('visible');
+                setTimeout(() => { musicCard.classList.add('revealed'); }, 400);
+                setTimeout(() => { footerCard.classList.add('revealed'); }, 520);
+            }, 2000);
+        }
+
+        function typeNext() {
+            if (segIdx >= segments.length) { revealSequence(); return; }
+
+            const seg = segments[segIdx];
+
+            if (seg.text === '\n') {
+                target.appendChild(document.createElement('br'));
+                segIdx++; charIdx = 0;
+                setTimeout(typeNext, SPEED);
+                return;
+            }
+
+            if (charIdx === 0) {
+                if (seg.cls) {
+                    seg.node = document.createElement('span');
+                    seg.node.className = seg.cls;
+                    target.appendChild(seg.node);
+                } else {
+                    seg.node = document.createTextNode('');
+                    target.appendChild(seg.node);
+                }
+            }
+
+            if (seg.cls) seg.node.textContent += seg.text[charIdx];
+            else         seg.node.nodeValue   += seg.text[charIdx];
+
+            charIdx++;
+            if (charIdx >= seg.text.length) { segIdx++; charIdx = 0; }
+
+            setTimeout(typeNext, SPEED);
+        }
+        
+        const fadeEls = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const index = Array.from(fadeEls).indexOf(entry.target);
+                    entry.target.style.transitionDelay = `${index * 0.12}s`;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        fadeEls.forEach(el => observer.observe(el));
+
+        setTimeout(typeNext, 300);
+    </script>
+
+</body>
+</html>
